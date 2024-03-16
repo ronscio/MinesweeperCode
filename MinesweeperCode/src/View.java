@@ -22,7 +22,6 @@ public class View {
         }
     }
 
-
     public void setGameAreaSizeX(int gameAreaSizeX) {
         this.gameAreaSizeX = gameAreaSizeX;
     }
