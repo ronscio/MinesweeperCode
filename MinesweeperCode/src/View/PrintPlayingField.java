@@ -40,6 +40,8 @@ public class PrintPlayingField {
                     {
                         System.out.print(cellTouchesBomb.getTouchedCells());
                     }
+
+                    //if bomb (only show if lost==true)
                     else
                     {
                         System.out.print("☀");
