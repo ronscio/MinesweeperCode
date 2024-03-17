@@ -9,37 +9,33 @@ public class PlayingField {
     private static int sizeX;
     private static int sizeY;
     private static int numberOfBombs;
-    public PlayingField(int sizeX, int sizeY, int numberOfBombs){
-        PlayingField.sizeX =sizeX;
-        PlayingField.sizeY =sizeY;
+
+    public PlayingField(int sizeX, int sizeY, int numberOfBombs) {
+        PlayingField.sizeX = sizeX;
+        PlayingField.sizeY = sizeY;
         PlayingField.lost = false;
-        PlayingField.numberOfBombs =numberOfBombs;
-        for(int i=0; i<sizeX; i++){
-            for(int j=0; j<sizeY; j++){
-                Cell emptyCell=new Empty(i,j);
+        PlayingField.numberOfBombs = numberOfBombs;
+        for (int i = 0; i < sizeX; i++) {
+            for (int j = 0; j < sizeY; j++) {
+                Cell emptyCell = new Empty(i, j);
                 cells.add(emptyCell);
             }
         }
-//        generateBombs();
-//        generateTouchesBombs();
     }
 
 
-    public static void generateBombs(){
+    public static void generateBombs() {
         Random rand = new Random();
-        for(int i=0; i<numberOfBombs; i++){
+        for (int i = 0; i < numberOfBombs; i++) {
             int xposition = rand.nextInt(sizeX);
 
-            int yposition= rand.nextInt(sizeY);
+            int yposition = rand.nextInt(sizeY);
 
-            if(cells.get(xposition+sizeY*xposition) instanceof Bomb){
+            if (cells.get(xposition + sizeY * xposition) instanceof Bomb) {
                 i--;
-            }
-            else
-            {
+            } else {
                 Cell bombCell = new Bomb(xposition, yposition);
-                cells.set(xposition + sizeY * xposition, bombCell);
-
+                cells.set(yposition + sizeY * xposition, bombCell);
             }
 
         }
@@ -47,8 +43,7 @@ public class PlayingField {
     }
 
 
-    public static void generateTouchesBombs()
-    {
+    public static void generateTouchesBombs() {
         for (int y = 0; y < sizeY; y++) {
             for (int x = 0; x < sizeX; x++) {
                 int count = 0;
@@ -65,54 +60,56 @@ public class PlayingField {
                         // Check boundaries
                         if (xToCheck >= 0 && xToCheck < sizeX && yToCheck >= 0 && yToCheck < sizeY) {
                             // Check if the neighboring cell is a Bomb
-                            if (cells.get(xToCheck + sizeY * xToCheck) instanceof Bomb) {
+                            if (cells.get(xToCheck + sizeX * yToCheck) instanceof Bomb) {
                                 count++;
+                                System.out.println("bomb detected at coordiantes: " + xToCheck + " "+ yToCheck+ ". Number detected until now: " + count);
                             }
                         }
                     }
                 }
 
                 // Update the cell if bombs are found in the vicinity
-                if (count > 0 && !(cells.get(x + sizeX * y) instanceof Bomb) && !(cells.get(x + sizeX * y) instanceof TouchesBombCell)) {
+                if (count > 0 && !(cells.get(x + sizeX * y) instanceof Bomb)) {
                     Cell touchesBombs = new TouchesBombCell(x, y, count);
                     cells.set(x + sizeX * y, touchesBombs);
-
+                    System.out.println("touches bomb added at coordinates: " + x + " "+ y);
+                    System.out.println("bombs detected: " + count);
+                    System.out.println();
                 }
             }
         }
     }
 
-    public void openContiguosCells(int x, int y){
-        if(cells.get(x+sizeX*y) instanceof Empty){
-            cells.get(x+sizeX*y).setOpen();
+    public void openContiguosCells(int x, int y) {
+        if (cells.get(x + sizeX * y) instanceof Empty) {
+            cells.get(x + sizeX * y).setOpen();
             for (int dx = -1; dx <= 1; dx++) {
                 for (int dy = -1; dy <= 1; dy++) {
                     int xToCheck = x + dx;
                     int yToCheck = y + dy;
                     if (xToCheck >= 0 && xToCheck < sizeX && yToCheck >= 0 && yToCheck < sizeY) {
-                        if(!(cells.get(xToCheck+sizeX*yToCheck).getOpen())){
+                        if (!(cells.get(xToCheck + sizeX * yToCheck).getOpen())) {
                             openContiguosCells(xToCheck, yToCheck);
                         }
                     }
                 }
             }
+        } else if (cells.get(x + sizeX * y) instanceof TouchesBombCell) {
+            cells.get(x + sizeX * y).setOpen();
         }
-        else if(cells.get(x+sizeX*y) instanceof TouchesBombCell){
-            cells.get(x+sizeX*y).setOpen();
-        }
     }
 
 
-    public void addFlag(int x, int y){
-        cells.get(x+sizeX*y).setFlagged();
+    public void addFlag(int x, int y) {
+        cells.get(x + sizeX * y).setFlagged();
     }
 
-    public void openCell(int x, int y){
-        cells.get(x+sizeX*y).setOpen();
+    public void openCell(int x, int y) {
+        cells.get(x + sizeX * y).setOpen();
     }
 
-    public static void setLostTrue(){
-        lost=true;
+    public static void setLostTrue() {
+        lost = true;
     }
 
     public static boolean isLost() {

@@ -32,7 +32,6 @@ public class PrintPlayingField {
         //////
 
 
-
         for (int y = 0; y < gameAreaSizeY; y++) {
             // Print row numbers
             System.out.printf("%2d ", y);
@@ -45,8 +44,9 @@ public class PrintPlayingField {
                         System.out.print(" ☐ ");
                     }
                     // If touches bomb
-                    else if (cellsList.get(x + y * gameAreaSizeX) instanceof TouchesBombCell cellTouchesBomb) {
-                        System.out.print(" " + cellTouchesBomb.getTouchedCells() + " ");
+                    else if (cellsList.get(x + y * gameAreaSizeX) instanceof TouchesBombCell touchesBombCell) {
+
+                        System.out.print(" " + touchesBombCell.getTouchedCells() + " ");
                     }
                     // If bomb (only show if lost == true)
                     else {
@@ -67,14 +67,6 @@ public class PrintPlayingField {
         }
     }
 }
-
-
-
-
-
-
-
-
 
 
 //public class PrintPlayingField {
