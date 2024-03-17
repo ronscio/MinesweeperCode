@@ -49,8 +49,8 @@ public class PlayingField {
                 int count = 0;
 
                 // Iterate through all surrounding cells
-                for (int dx = -1; dx <= 1; dx++) {
-                    for (int dy = -1; dy <= 1; dy++) {
+                for (int dy = -1; dy <= 1; dy++) {
+                    for (int dx = -1; dx <= 1; dx++) {
 
                         if (dx == 0 && dy == 0) continue; // Skip the current cell
 
@@ -66,6 +66,8 @@ public class PlayingField {
                             }
                         }
                     }
+
+                    //System.out.println(count);
                 }
 
                 // Update the cell if bombs are found in the vicinity
@@ -76,6 +78,7 @@ public class PlayingField {
                     System.out.println("bombs detected: " + count);
                     System.out.println();
                 }
+
             }
         }
     }
